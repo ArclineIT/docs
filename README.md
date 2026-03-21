@@ -30,3 +30,7 @@ Static HTML generated from Markdown (Go builder using goldmark). Uses the Arclin
 - Watch mode for local development
 
 See [todo.md](todo.md) for the full content plan and builder task list.
+
+## License
+
+MIT — see [LICENSE](LICENSE).
