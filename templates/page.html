@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {{template "head" .}}
+  <title>{{.Title}}</title>
+  {{if .Description}}<meta name="description" content="{{.Description}}">{{end}}
+  {{if .Canonical}}<link rel="canonical" href="{{.Canonical}}">{{end}}
+  <meta name="docs-root" content="/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{.Title}}">
+  {{if .Description}}<meta property="og:description" content="{{.Description}}">{{end}}
+</head>
+<body>
+
+{{template "nav" .}}
+
+<main class="docs-main" id="main-content">
+
+  {{if .Breadcrumbs}}
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="/">Docs</a>
+    {{range .Breadcrumbs}}
+    <span class="breadcrumb__sep">/</span>
+    {{if .URL}}<a href="{{.URL}}">{{.Label}}</a>{{else}}<span>{{.Label}}</span>{{end}}
+    {{end}}
+  </nav>
+  {{end}}
+
+  <article class="docs-article">
+    {{if .Nav}}
+    <nav class="docs-toc" aria-label="Table of contents">
+      <details class="docs-toc__details" open>
+        <summary class="docs-toc__summary">On this page</summary>
+        <div class="docs-toc__links" id="docs-toc-links">
+          <!-- Populated by JS from h2/h3 headings -->
+        </div>
+      </details>
+    </nav>
+    {{end}}
+
+    {{.Content}}
+  </article>
+
+  {{if or .Prev .Next}}
+  <nav class="docs-pager" aria-label="Next and previous pages">
+    <div class="docs-pager__side">
+      {{if .Prev}}
+      <a href="{{.Prev.URL}}" class="docs-pager__link docs-pager__link--prev">
+        <span class="docs-pager__dir">&larr; Previous</span>
+        <span class="docs-pager__title">{{.Prev.Title}}</span>
+      </a>
+      {{end}}
+    </div>
+    <div class="docs-pager__side docs-pager__side--right">
+      {{if .Next}}
+      <a href="{{.Next.URL}}" class="docs-pager__link docs-pager__link--next">
+        <span class="docs-pager__dir">Next &rarr;</span>
+        <span class="docs-pager__title">{{.Next.Title}}</span>
+      </a>
+      {{end}}
+    </div>
+  </nav>
+  {{end}}
+</main>
+
+{{template "footer" .}}
+<script src="/js/search.js"></script>
+<script>
+(function() {
+  // Inline table of contents — auto-generated from h2 and h3 headings.
+  var toc = document.getElementById('docs-toc-links');
+  if (!toc) return;
+  var headings = document.querySelectorAll('.docs-article h2, .docs-article h3');
+  if (headings.length < 2) { toc.parentElement.hidden = true; return; }
+  var html = '<ul class="docs-toc__list">';
+  var stack = ['ul'];
+  var prevLevel = 2;
+  headings.forEach(function(h) {
+    var level = h.tagName === 'H2' ? 2 : 3;
+    var id = h.id || '';
+    if (!id) { id = h.textContent.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''); h.id = id; }
+    if (level > prevLevel) { html += '<ul class="docs-toc__sublist">'; stack.push('ul'); }
+    while (level < prevLevel && stack.length > 1) { html += '</' + stack.pop() + '>'; prevLevel--; }
+    html += '<li class="docs-toc__item' + (level === 3 ? ' docs-toc__item--sub' : '') + '">' +
+      '<a href="#' + id + '">' + h.textContent + '</a></li>';
+    prevLevel = level;
+  });
+  while (stack.length > 1) { html += '</' + stack.pop() + '>'; }
+  html += '</ul>';
+  toc.innerHTML = html;
+})();
+</script>
+</body>
+</html>

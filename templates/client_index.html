@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {{template "head" .}}
+  <title>My Docs — Arcline</title>
+</head>
+<body>
+
+{{template "nav" .}}
+
+<main class="docs-main">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="/">Docs</a>
+    <span class="breadcrumb__sep">/</span>
+    <span>My Docs</span>
+  </nav>
+
+  <article class="docs-article">
+    <h1>My Docs</h1>
+    <p>Private documentation and guides for your Arcline account.</p>
+  </article>
+
+  {{if .Pages}}
+  <div class="section-index">
+    {{range .Pages}}
+    <a href="/client/{{.Slug}}/" class="section-index__card">
+      <span class="section-index__title">{{.Title}}</span>
+      {{if .Description}}<span class="section-index__desc">{{.Description}}</span>{{end}}
+    </a>
+    {{end}}
+  </div>
+  {{else}}
+  <p style="color:var(--text-muted);margin-top:1.5rem;">No private documentation has been added to your account yet.</p>
+  {{end}}
+</main>
+
+{{template "footer-simple" .}}
+</body>
+</html>

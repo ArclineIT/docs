@@ -1,0 +1,52 @@
+stages:
+  - build
+  - deploy
+
+variables:
+  IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+  IMAGE_LATEST: $CI_REGISTRY_IMAGE:latest
+
+build:
+  stage: build
+  image: docker:26
+  services:
+    - docker:26-dind
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker pull $IMAGE_LATEST || true
+    - docker build --pull --cache-from $IMAGE_LATEST --tag $IMAGE --tag $IMAGE_LATEST .
+    - docker push $IMAGE
+    - docker push $IMAGE_LATEST
+  only:
+    - main
+
+deploy:
+  stage: deploy
+  image: alpine:3.21
+  before_script:
+    - apk add --no-cache openssh-client
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh && chmod 700 ~/.ssh
+    - echo "$SSH_HOST_KEY" >> ~/.ssh/known_hosts
+  script:
+    - |
+      ssh $SSH_USER@$SSH_HOST "
+        docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY &&
+        docker pull $IMAGE_LATEST &&
+        docker stop arcline-docs 2>/dev/null || true &&
+        docker rm   arcline-docs 2>/dev/null || true &&
+        docker run -d \
+          --name arcline-docs \
+          --restart unless-stopped \
+          -p 8080:8080 \
+          -v /opt/arcline-docs/.env:/app/.env:ro \
+          -v /opt/arcline-docs/data:/app/data \
+          $IMAGE_LATEST
+      "
+  only:
+    - main
+  needs:
+    - build
+

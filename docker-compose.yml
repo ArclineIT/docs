@@ -1,0 +1,21 @@
+services:
+  docs:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      PORT: "8080"
+      ADMIN_EMAIL: "${ADMIN_EMAIL}"
+      BILLING_URL: "${BILLING_URL:-https://portal.arcline.it}"
+      BILLING_DB: /data/billing/arcline-billing.db
+      DOCS_DB: /data/docs/arcline-docs.db
+    volumes:
+      - billing-data:/data/billing:ro
+      - docs-data:/data/docs
+    restart: unless-stopped
+
+volumes:
+  billing-data:
+    external: true
+    name: arcline_billing_data
+  docs-data:

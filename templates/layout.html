@@ -1,0 +1,181 @@
+{{define "head"}}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="/css/fonts.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/docs.css">
+<link rel="icon" type="image/svg+xml" href="/public/favicon.svg">
+<meta property="og:image" content="https://arcline.it/public/brand/og-image.png">
+<meta property="og:site_name" content="Arcline Docs">
+{{end}}
+
+{{define "nav"}}
+<header class="nav">
+  <div class="container nav__inner">
+    <a href="https://arcline.it" class="nav__logo" aria-label="Arcline home">
+      <svg width="22" height="22" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <path d="M5 27L16 5L27 27" stroke="#00c8f0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M9 20H23" stroke="#00c8f0" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+      Arcline
+    </a>
+    <a href="/" class="nav__docs-badge">docs</a>
+    {{if .Nav}}
+    <div class="nav__docs-menu">
+      <button class="nav__browse-btn" id="browse-btn" aria-haspopup="true" aria-expanded="false">
+        <span class="label">Browse</span>
+      </button>
+      <nav class="nav__dropdown" id="browse-dropdown" role="menu" aria-label="Documentation sections">
+        {{range .Nav}}
+        <p class="nav__dropdown-section">{{.Title}}</p>
+        {{range .Pages}}
+        <a href="{{.URL}}" class="nav__dropdown-link{{if .Active}} nav__dropdown-link--active{{end}}" role="menuitem">{{.Title}}</a>
+        {{end}}
+        {{end}}
+      </nav>
+    </div>
+    <div class="nav__search-wrap search-wrap">
+      <input type="search" id="search-input" class="nav__search" placeholder="Search docs… (⌘K)" autocomplete="off" aria-label="Search documentation">
+      <div id="search-results" class="search-results" hidden role="listbox" aria-label="Search results"></div>
+    </div>
+    {{end}}
+    <div class="nav__actions">
+      {{if .Customer}}
+      <a href="/client/" class="btn btn--ghost btn--sm">My Docs</a>
+      {{if .IsAdmin}}<a href="/admin/" class="btn btn--ghost btn--sm">Admin</a>{{end}}
+      <a href="/logout" class="btn btn--ghost btn--sm">Log out</a>
+      {{else}}
+      <a href="https://arcline.it/pricing" class="btn btn--ghost btn--sm">Hosting plans</a>
+      <a href="https://arcline.it/contact" class="btn btn--primary btn--sm">Get started</a>
+      {{end}}
+    </div>
+    <button class="nav__hamburger" aria-label="Toggle navigation" aria-expanded="false" id="hamburger">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+{{if .Nav}}
+<nav class="nav__mobile" id="mobile-nav" aria-label="Mobile navigation">
+  {{range .Nav}}
+  <p class="nav__mobile-section">{{.Title}}</p>
+  {{range .Pages}}
+  <a href="{{.URL}}"{{if .Active}} class="active"{{end}}>{{.Title}}</a>
+  {{end}}
+  {{end}}
+  <div class="nav__mobile-actions">
+    {{if $.Customer}}
+    <a href="/client/" class="btn btn--ghost btn--sm">My Docs</a>
+    <a href="/logout" class="btn btn--ghost btn--sm">Log out</a>
+    {{else}}
+    <a href="https://arcline.it/contact" class="btn btn--primary btn--sm">Get started</a>
+    {{end}}
+  </div>
+</nav>
+{{end}}
+
+<script>
+(function() {
+  // Hamburger toggle (mobile)
+  var btn = document.getElementById('hamburger');
+  var nav = document.getElementById('mobile-nav');
+  if (btn && nav) {
+    btn.addEventListener('click', function() {
+      var open = nav.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open);
+    });
+  }
+
+  // Browse dropdown toggle (desktop)
+  var browseBtn = document.getElementById('browse-btn');
+  var dropdown = document.getElementById('browse-dropdown');
+  if (browseBtn && dropdown) {
+    browseBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var open = dropdown.classList.toggle('open');
+      browseBtn.setAttribute('aria-expanded', open);
+    });
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.nav__docs-menu')) {
+        dropdown.classList.remove('open');
+        browseBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        dropdown.classList.remove('open');
+        browseBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+})();
+</script>
+{{end}}
+
+{{define "footer"}}
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <a href="https://arcline.it" class="footer__logo" aria-label="Arcline home">
+          <svg width="18" height="18" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <path d="M5 27L16 5L27 27" stroke="#00c8f0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M9 20H23" stroke="#00c8f0" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+          Arcline
+        </a>
+        <p class="footer__tagline">IT infrastructure built for reliability, privacy, and independence. No cloud lock-in. No middlemen. No surprises.</p>
+        <a href="https://arcline.it/status" class="footer__status">All Systems Operational</a>
+      </div>
+      <div>
+        <p class="footer__col-title">Services</p>
+        <ul class="footer__links">
+          <li><a href="https://arcline.it/services" class="footer__link">Server setup &amp; management</a></li>
+          <li><a href="https://arcline.it/services" class="footer__link">Network security</a></li>
+          <li><a href="https://arcline.it/pricing" class="footer__link">Web hosting</a></li>
+          <li><a href="https://arcline.it/contact" class="footer__link">Contact us</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer__col-title">Docs</p>
+        <ul class="footer__links">
+          <li><a href="/getting-started/" class="footer__link">Getting started</a></li>
+          <li><a href="/migrate/" class="footer__link">Migration guides</a></li>
+          {{if .Customer}}<li><a href="/client/" class="footer__link">My Docs</a></li>{{end}}
+        </ul>
+      </div>
+      <div>
+        <p class="footer__col-title">Support</p>
+        <ul class="footer__links">
+          <li><a href="https://arcline.it/contact" class="footer__link">Open a ticket</a></li>
+          <li><a href="https://arcline.it/faq" class="footer__link">FAQ</a></li>
+          <li><a href="https://arcline.it/about" class="footer__link">About Arcline</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p class="footer__copy">&copy; {{.Year}} Arcline IT LLC. All rights reserved.</p>
+      <nav class="footer__legal" aria-label="Legal links">
+        <a href="https://arcline.it/tos">Terms of service</a>
+        <a href="https://arcline.it/privacy">Privacy policy</a>
+        <a href="https://arcline.it/aup">AUP</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+{{end}}
+
+{{define "footer-simple"}}
+<footer class="footer">
+  <div class="container">
+    <div class="footer__bottom">
+      <p class="footer__copy">&copy; {{.Year}} Arcline IT LLC. All rights reserved.</p>
+      <nav class="footer__legal" aria-label="Legal links">
+        <a href="https://arcline.it/tos">Terms of service</a>
+        <a href="https://arcline.it/privacy">Privacy policy</a>
+        <a href="https://arcline.it/aup">AUP</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+{{end}}
