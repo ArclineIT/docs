@@ -1,59 +1,108 @@
-# arcline-docs
+# Arcline Docs
 
-Knowledge base, migration guides, and self-hosting tutorials for Arcline. Hosted at `docs.arclineit.com`.
+Knowledge base, migration guides and self-hosting tutorials for Arcline,
+hosted at `docs.arcline.it`.
 
-## Status
+This is the Ruby on Rails rewrite of the original Go site builder and server
+(preserved in the repository history). Pages are rendered on request, so there
+is no separate static build.
 
-**Complete.** All content sections are written (33 guides total across 6 sections). The Go static site builder generates a fully functional documentation site with search, sitemap, RSS feed, and 404 pages.
+## What it serves
 
-## Content
+- **Public guides**: the Markdown files under `content/`, one folder per
+  section. 37 guides across getting started, migration, WordPress, VPS,
+  privacy and self-hosting, reference, and legal.
+- **My docs** (`/client`): private pages for signed-in customers. Each page is
+  visible to everyone signed in, to customers on one plan, or to one customer.
+- **Admin** (`/admin/pages`): write and edit the private pages.
+- **Search** in the header (⌘K), backed by `/search.json`.
+- `/sitemap.xml` and `/rss.xml`.
 
-| Area | Status | Guides |
-|------|--------|--------|
-| Migration guides (GoDaddy, Bluehost, SiteGround, Namecheap, HostGator, WP Engine, domain transfer) | ✅ | 7 |
-| Getting started (SSH, SFTP, MySQL backup, email, DNS, SSL) | ✅ | 6 |
-| WordPress (install shared/VPS, WooCommerce, caching, security) | ✅ | 5 |
-| VPS setup (initial setup, Nginx+PHP+MySQL, static/Node.js/Go deployment, backups, fail2ban) | ✅ | 7 |
-| Privacy & self-hosting (no-CDN, arcline-check, performance, email auth) | ✅ | 4 |
-| Reference (nameservers, PHP versions, plan limits, AUP, support) | ✅ | 5 |
-| Legal (DPA, MSA, SLA) | ✅ | 3 |
+## Writing a guide
 
-## Site Builder Features
+Add a Markdown file at `content/<section>/<slug>.md`. It is served at
+`/<section>/<slug>/`.
 
-- **Markdown → HTML** — goldmark renderer with tables, strikethroughs, task lists
-- **Arcline design system** — same CSS as the main website
-- **Client-side search** — JSON index with keyboard navigation (⌘K)
-- **Sitemap** — `sitemap.xml` for SEO
-- **RSS feed** — `rss.xml` for content syndication
-- **404 page** — custom error page with search
-- **Navigation** — sidebar with active page highlighting, breadcrumbs, prev/next pagers
-- **Watch mode** — `--watch` flag rebuilds on content/template changes
+```markdown
+---
+title: "Migrate from GoDaddy"
+description: "Move your website and email from GoDaddy to Arcline without downtime."
+section: migrate
+order: 1
+---
 
-## Development
+# Migrate from GoDaddy
 
-```bash
-# Build the dynamic server
-make build
-
-# Run the dev server
-make run
-
-# Build the static site (outputs to dist/)
-make build-static
-
-# Watch mode — rebuilds on content/template changes
-make build-static-watch
+Moving from GoDaddy to Arcline involves three parts...
 ```
 
-## Tech Stack
+`order` sorts guides within a section. The page shows the title from the
+frontmatter, so a leading `# Title` line is dropped. Markdown is
+GitHub-flavoured: tables, strikethrough, task lists, fenced code, and heading
+IDs for linking. Raw HTML is passed through.
 
-- **Language**: Go
-- **Markdown**: goldmark (tables, strikethrough, task lists, auto heading IDs)
-- **Templates**: Go html/template
-- **Storage**: SQLite (for client/admin pages)
-- **Watch mode**: fsnotify
-- **Static output**: `dist/` directory (self-hostable via any web server)
+Sections and their display order are listed in `app/models/guide.rb`. A new
+folder appears automatically, after the listed ones.
+
+In production guides are read once at boot, so deploy to publish a change.
+
+## Sign-in
+
+Sign-in goes through Nexus (OpenID Connect, authorization code with PKCE).
+Register this site in Nexus under Connected Apps with the redirect URI
+`https://docs.arcline.it/auth/nexus/callback`, then set `NEXUS_CLIENT_ID` and
+`NEXUS_CLIENT_SECRET`. Without them the public guides still work and the
+sign-in link is hidden.
+
+A user is an admin if they hold the Nexus `admin` role or their email matches
+`ADMIN_EMAIL`.
+
+Plan-limited pages need `BILLING_DB_PATH`: the billing app's SQLite database,
+opened read-only. A customer's plan is found by the email they sign in with.
+A page limited to one customer is matched on that same email.
+
+## Requirements
+
+- Ruby 4.0+
+- SQLite 3 (bundled via the `sqlite3` gem)
+
+## Setup
+
+```bash
+bin/setup --skip-server   # install gems and prepare the database
+cp .env.example .env      # then fill in your values
+bin/rails server          # http://localhost:3000, or PORT if set
+```
+
+## Environment variables
+
+| Variable | Default | Description |
+|---|---|---|
+| `PORT` | `3000` | HTTP listen port (the original service used `8080`) |
+| `DATABASE_PATH` | `storage/<env>.sqlite3` | SQLite database file (client pages) |
+| `DOCS_BASE_URL` | `https://docs.arcline.it` | Public address, for canonical links, sitemap and feed |
+| `NEXUS_ISSUER` | `https://nexus.arcline.it` | Nexus base URL |
+| `NEXUS_CLIENT_ID` | — | OAuth client ID from Nexus |
+| `NEXUS_CLIENT_SECRET` | — | OAuth client secret from Nexus |
+| `ADMIN_EMAIL` | — | This user may manage client pages |
+| `BILLING_DB_PATH` | — | Billing's SQLite database, read-only, for plan lookups |
+
+## Tests
+
+```bash
+bin/rails test
+bin/rubocop
+bin/brakeman
+```
+
+The suite renders every guide in `content/`, so a guide that fails to parse
+fails the build.
+
+## Deployment
+
+The app ships with a `Dockerfile` and a Kamal config (`config/deploy.yml`).
+The SQLite database lives in `storage/`, which is mounted as a volume.
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT. See [LICENSE](LICENSE).

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Arcline Docs</title>
+  <link><%= canonical_url("/") %></link>
+  <description>Guides, tutorials, and reference docs for Arcline hosting customers.</description>
+  <language>en-us</language>
+  <atom:link href="<%= canonical_url("/rss.xml") %>" rel="self" type="application/rss+xml"/>
+<% @guides.each do |guide| %>
+  <item>
+    <title><%= guide.title %></title>
+    <link><%= canonical_url(guide.path) %></link>
+    <guid><%= canonical_url(guide.path) %></guid>
+    <description><%= guide.description %></description>
+    <category><%= guide.section_title %></category>
+  </item>
+<% end %>
+</channel>
+</rss>

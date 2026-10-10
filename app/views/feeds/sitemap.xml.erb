@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc><%= canonical_url("/") %></loc></url>
+<% @sections.each do |section| %>
+  <url><loc><%= canonical_url(section.path) %></loc></url>
+<% section.guides.each do |guide| %>
+  <url><loc><%= canonical_url(guide.path) %></loc></url>
+<% end %>
+<% end %>
+</urlset>

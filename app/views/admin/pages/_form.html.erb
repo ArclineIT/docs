@@ -1,0 +1,65 @@
+<% customers = BillingReader.customers %>
+<%= form_with model: [ :admin, @page ], class: "form" do |form| %>
+  <%= form_errors @page %>
+
+  <div class="form__row">
+    <div class="field">
+      <%= form.label :title %>
+      <%= form.text_field :title, required: true %>
+    </div>
+    <div class="field">
+      <%= form.label :slug do %>Slug <span class="field__optional">(the address: /client/your-slug)</span><% end %>
+      <%= form.text_field :slug, required: true, pattern: "[a-z0-9]+(-[a-z0-9]+)*", autocapitalize: "none", spellcheck: false %>
+    </div>
+  </div>
+
+  <div class="form__row">
+    <div class="field">
+      <%= form.label :description %>
+      <%= form.text_field :description %>
+    </div>
+    <div class="field">
+      <%= form.label :section do %>Section <span class="field__optional">(groups pages in the list)</span><% end %>
+      <%= form.text_field :section %>
+    </div>
+    <div class="field">
+      <%= form.label :display_order, "Order" %>
+      <%= form.number_field :display_order %>
+    </div>
+  </div>
+
+  <div class="form__row">
+    <div class="field">
+      <%= form.label :visibility_type, "Visible to" %>
+      <%= form.select :visibility_type, [ [ "Everyone signed in", "public" ], [ "Customers on one plan", "plan" ], [ "One customer", "customer" ] ],
+            selected: @page.visibility_type %>
+    </div>
+    <div class="field">
+      <%= form.label :visibility_plan, "Plan" %>
+      <%= form.select :visibility_plan, Page::PLANS.invert.to_a, selected: (@page.visibility_target if @page.visibility_type == "plan") %>
+    </div>
+    <div class="field">
+      <%= form.label :visibility_customer, "Customer email" %>
+      <%= form.email_field :visibility_customer, value: (@page.visibility_target if @page.visibility_type == "customer"),
+            list: "customers", placeholder: "customer@example.com" %>
+      <datalist id="customers">
+        <% customers.each do |label, email| %><option value="<%= email %>"><%= label %></option><% end %>
+      </datalist>
+    </div>
+  </div>
+  <p class="field__hint">The plan and customer fields only apply to the matching “Visible to” choice. A customer must sign in through Nexus with this email.</p>
+
+  <div class="field">
+    <%= form.label :content do %>Content <span class="field__optional">(Markdown)</span><% end %>
+    <%= form.text_area :content, rows: 22, spellcheck: true, class: "field__code" %>
+  </div>
+
+  <%= form.submit @page.persisted? ? "Save page" : "Create page", class: "btn btn--primary" %>
+<% end %>
+
+<% if @page.persisted? %>
+  <div class="dash-actions">
+    <%= button_to "Delete page", admin_page_path(@page), method: :delete, class: "btn btn--danger btn--sm",
+          data: { turbo_confirm: "Delete #{@page.title}?" } %>
+  </div>
+<% end %>

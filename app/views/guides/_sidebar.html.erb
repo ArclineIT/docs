@@ -1,0 +1,13 @@
+<%# locals: (current: nil) %>
+<nav class="docs__sidebar" aria-label="Guides">
+  <% Guide.sections.each do |section| %>
+    <details class="docs__group" <%= "open" if current.nil? || current == section.slug || current.try(:section) == section.slug %>>
+      <summary><%= section.title %></summary>
+      <ul>
+        <% section.guides.each do |guide| %>
+          <li><%= link_to guide.title, guide.path, aria: { current: ("page" if current.is_a?(Guide) && current.path == guide.path) } %></li>
+        <% end %>
+      </ul>
+    </details>
+  <% end %>
+</nav>

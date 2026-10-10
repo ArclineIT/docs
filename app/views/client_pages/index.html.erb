@@ -1,0 +1,26 @@
+<% content_for :title, "My docs — Arcline Docs" %>
+
+<section class="page-header">
+  <div class="container">
+    <p class="eyebrow"><%= link_to "Docs", root_path %></p>
+    <h1 class="page-header__title">My docs</h1>
+    <p class="lead">Guides for your account, <%= current_viewer.name %>.</p>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="container">
+    <% if @pages.any? %>
+      <div class="docs__cards">
+        <% @pages.each do |page| %>
+          <%= link_to client_page_path(page.slug), class: "docs__card" do %>
+            <span class="docs__card-title"><%= page.title %></span>
+            <span class="docs__desc"><%= page.description %></span>
+          <% end %>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="dash-empty">There are no private guides for your account yet.</p>
+    <% end %>
+  </div>
+</section>

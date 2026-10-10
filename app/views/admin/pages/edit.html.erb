@@ -1,0 +1,14 @@
+<% content_for :title, "Edit page — Arcline Docs" %>
+
+<section class="page-header">
+  <div class="container">
+    <p class="eyebrow"><%= link_to "Client pages", admin_pages_path %></p>
+    <h1 class="page-header__title"><%= @page.title_was %></h1>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="container">
+    <%= render "form" %>
+  </div>
+</section>

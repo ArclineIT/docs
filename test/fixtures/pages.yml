@@ -1,0 +1,19 @@
+welcome:
+  title: Welcome
+  slug: welcome
+  description: Start here
+  content: "## Hello\n\nEveryone signed in can read this."
+  visibility: public
+
+vps_runbook:
+  title: VPS runbook
+  slug: vps-runbook
+  section: VPS
+  content: "For **VPS Tier 2** customers."
+  visibility: "plan:vps_2"
+
+acme_notes:
+  title: Acme notes
+  slug: acme-notes
+  content: "Only for Acme."
+  visibility: "customer:owner@acme.test"

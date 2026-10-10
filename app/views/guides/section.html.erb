@@ -1,0 +1,23 @@
+<% content_for :title, "#{@section.title} — Arcline Docs" %>
+
+<section class="page-header">
+  <div class="container">
+    <p class="eyebrow"><%= link_to "Docs", root_path %></p>
+    <h1 class="page-header__title"><%= @section.title %></h1>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="container docs">
+    <%= render "sidebar", current: @section.slug %>
+
+    <div class="docs__main docs__cards">
+      <% @section.guides.each do |guide| %>
+        <%= link_to guide.path, class: "docs__card" do %>
+          <span class="docs__card-title"><%= guide.title %></span>
+          <span class="docs__desc"><%= guide.description %></span>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</section>

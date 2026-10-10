@@ -5,10 +5,10 @@ Hosted at: docs.arclineit.com
 
 ## Status
 
-**Complete.** All content sections are written. The static site builder generates a fully functional documentation site with search, sitemap, RSS feed, and 404 pages.
+**Complete.** All content sections are written. The Rails app serves the documentation site with search, sitemap, RSS feed, private client pages, and sign-in through Nexus.
 
 ## Format
-- Static HTML (generated from Markdown via Go builder using goldmark)
+- Ruby on Rails 8.1 app, rendering Markdown on request (kramdown, GitHub-flavoured)
 - Arcline design system (same CSS as website)
 - Client-side search (JSON index with keyboard navigation)
 - RSS feed (rss.xml) for new guides
@@ -62,26 +62,23 @@ Hosted at: docs.arclineit.com
 - [x] Acceptable Use Policy summary
 - [x] How to open a support ticket
 
-## Site Builder ✅
-- [x] Simple Go Markdown → HTML builder (goldmark)
-- [x] Template: Arcline design system header/footer/sidebar
-- [x] Search: client-side JSON index
-- [x] Sitemap.xml generation
-- [x] RSS feed for new guides (rss.xml)
-- [x] Build script: watch mode for local dev (`make build-static-watch`)
+## Site ✅
+- [x] Port from Go to Ruby on Rails
+- [x] Markdown rendering (tables, strikethrough, task lists, heading IDs)
+- [x] Arcline design system header/footer/sidebar, breadcrumbs, prev/next
+- [x] Search: client-side JSON index (`/search.json`, ⌘K)
+- [x] Sitemap (`/sitemap.xml`) and RSS feed (`/rss.xml`)
+- [x] Client pages limited by plan or customer, with an admin editor
+- [x] Sign-in through Nexus (OpenID Connect)
+
+## Ideas
+- [ ] Full-text search over guide bodies, not just the opening
+- [ ] Reload guides without a deploy
 
 ## Development
 
 ```bash
-# Build the dynamic server
-make build
-
-# Run the dev server
-make run
-
-# Build the static site (outputs to dist/)
-make build-static
-
-# Watch mode — rebuilds on content/template changes
-make build-static-watch
+bin/setup --skip-server
+bin/rails server
+bin/rails test
 ```

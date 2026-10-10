@@ -1,0 +1,18 @@
+<% content_for :title, "#{@page.title} — Arcline Docs" %>
+
+<section class="page-header">
+  <div class="container">
+    <p class="eyebrow"><%= link_to "My docs", client_pages_path %></p>
+    <h1 class="page-header__title page-header__title--article"><%= @page.title %></h1>
+    <% if @page.description.present? %><p class="lead"><%= @page.description %></p><% end %>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="container">
+    <article class="prose"><%= @page.html %></article>
+    <% if current_viewer.admin? %>
+      <p class="dash-actions"><%= link_to "Edit this page", edit_admin_page_path(@page), class: "btn btn--ghost btn--sm" %></p>
+    <% end %>
+  </div>
+</section>

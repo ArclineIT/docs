@@ -1,0 +1,39 @@
+<% content_for :title, "Arcline Documentation" %>
+<% content_for :description, "Guides for getting started with Arcline hosting, migrating from other providers, and managing your account." %>
+
+<section class="page-header">
+  <div class="container">
+    <p class="eyebrow">Docs</p>
+    <h1 class="page-header__title">Arcline documentation</h1>
+    <p class="lead">Guides for getting started with Arcline hosting, migrating from other providers, and managing your account.</p>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="container docs">
+    <%= render "sidebar" %>
+
+    <div class="docs__main">
+      <% @sections.each do |section| %>
+        <section class="docs__section">
+          <h2><%= link_to section.title, section.path %></h2>
+          <ul class="docs__list">
+            <% section.guides.each do |guide| %>
+              <li>
+                <%= link_to guide.title, guide.path %>
+                <% if guide.description.present? %><span class="docs__desc"><%= guide.description %></span><% end %>
+              </li>
+            <% end %>
+          </ul>
+        </section>
+      <% end %>
+
+      <% if signed_in? %>
+        <section class="docs__section">
+          <h2><%= link_to "My docs", client_pages_path %></h2>
+          <p class="docs__desc">Private guides and documentation specific to your account.</p>
+        </section>
+      <% end %>
+    </div>
+  </div>
+</section>

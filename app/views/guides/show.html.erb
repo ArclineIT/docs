@@ -1,0 +1,29 @@
+<% content_for :title, "#{@guide.title} — Arcline Docs" %>
+<% content_for :description, @guide.description %>
+
+<section class="page-header">
+  <div class="container">
+    <p class="eyebrow"><%= link_to "Docs", root_path %> / <%= link_to @guide.section_title, guide_section_path(@guide.section) %></p>
+    <h1 class="page-header__title page-header__title--article"><%= @guide.title %></h1>
+    <% if @guide.description.present? %><p class="lead"><%= @guide.description %></p><% end %>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="container docs">
+    <%= render "sidebar", current: @guide %>
+
+    <article class="docs__main">
+      <div class="prose"><%= @guide.html %></div>
+
+      <nav class="docs__pager" aria-label="More in <%= @guide.section_title %>">
+        <% if (previous = @guide.previous) %>
+          <%= link_to previous.path, class: "docs__pager-link", rel: "prev" do %><span>Previous</span><%= previous.title %><% end %>
+        <% else %><span></span><% end %>
+        <% if (following = @guide.next) %>
+          <%= link_to following.path, class: "docs__pager-link docs__pager-link--next", rel: "next" do %><span>Next</span><%= following.title %><% end %>
+        <% end %>
+      </nav>
+    </article>
+  </div>
+</section>

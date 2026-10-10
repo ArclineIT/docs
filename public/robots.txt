@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /client
+Disallow: /admin
+Sitemap: https://docs.arcline.it/sitemap.xml

@@ -1,0 +1,49 @@
+<% content_for :title, "Client pages — Arcline Docs" %>
+
+<section class="page-header">
+  <div class="container">
+    <p class="eyebrow">Admin</p>
+    <h1 class="page-header__title">Client pages</h1>
+    <p class="lead">Private pages shown under “My docs”. Public guides live in the repository's <code>content/</code> folder.</p>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="container">
+    <div class="dash">
+      <div class="dash-actions"><%= link_to "New page", new_admin_page_path, class: "btn btn--primary btn--sm" %></div>
+      <div class="panel">
+        <% if @pages.any? %>
+          <div class="table-wrap">
+            <table class="inv-table">
+              <thead>
+                <tr>
+                  <th class="inv-table__th">Title</th>
+                  <th class="inv-table__th">Section</th>
+                  <th class="inv-table__th">Visible to</th>
+                  <th class="inv-table__th">Updated</th>
+                  <th class="inv-table__th"><span class="visually-hidden">Actions</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @pages.each do |page| %>
+                  <tr class="inv-table__row">
+                    <td class="inv-table__td"><%= link_to page.title, edit_admin_page_path(page) %><span class="cell-note">/client/<%= page.slug %></span></td>
+                    <td class="inv-table__td inv-table__td--muted"><%= page.section.presence || "—" %></td>
+                    <td class="inv-table__td inv-table__td--muted"><%= page.visibility_label %></td>
+                    <td class="inv-table__td inv-table__td--muted"><%= format_date page.updated_at %></td>
+                    <td class="inv-table__td inv-table__td--right">
+                      <%= link_to "View", client_page_path(page.slug), class: "btn btn--ghost btn--sm" %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        <% else %>
+          <div class="panel__body"><p class="dash-empty">No client pages yet.</p></div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</section>
