@@ -63,7 +63,7 @@ Example output:
 ```
   domain      arcline.it
   resolved    203.0.113.42
-  rdns        server1.arclineit.com
+  rdns        server1.arcline.it
   asn         AS64496  Example ISP
   org         Example ISP LLC
 
@@ -106,7 +106,7 @@ arcline-check example.com --json
 {
   "domain": "example.com",
   "ip": "203.0.113.42",
-  "rdns": "server1.arclineit.com",
+  "rdns": "server1.arcline.it",
   "asn": "AS64496",
   "org": "Example ISP LLC",
   "cdn_detected": false,

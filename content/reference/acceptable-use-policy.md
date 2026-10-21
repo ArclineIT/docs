@@ -68,7 +68,7 @@ Arcline reserves the right to terminate service for repeated or severe violation
 
 If you see content hosted on Arcline that violates the AUP:
 
-- **Email**: abuse@arclineit.com
+- **Email**: abuse@arcline.it
 - **DMCA takedown notices**: See our DMCA policy at [arcline.it/dmca](https://arcline.it/dmca)
 - **Response time**: We typically respond to abuse reports within 4 hours
 

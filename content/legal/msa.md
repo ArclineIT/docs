@@ -306,9 +306,9 @@ All legal notices under this Agreement shall be sent in writing to:
 |------|------------|
 | **Order Form** | The service order, plan selection, or checkout process through which Customer selects specific Services |
 | **Services** | Hosting and related services provided by Arcline under this Agreement |
-| **SLA** | Service Level Agreement, available at [docs.arclineit.com/legal/sla] |
+| **SLA** | Service Level Agreement, available at [docs.arcline.it/legal/sla] |
 | **AUP** | Acceptable Use Policy, available at [arcline.it/aup](https://arcline.it/aup) |
-| **DPA** | Data Processing Agreement, available at [docs.arclineit.com/legal/dpa] |
+| **DPA** | Data Processing Agreement, available at [docs.arcline.it/legal/dpa] |
 
 ---
 

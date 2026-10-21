@@ -34,9 +34,9 @@ In your Arcline cPanel, go to **Domains → Zone Editor** and add a TXT record:
 
 | Type | Name | Value |
 |------|------|-------|
-| TXT | `@` | `v=spf1 mx include:arclineit.com ~all` |
+| TXT | `@` | `v=spf1 mx include:arcline.it ~all` |
 
-The `include:arclineit.com` will pull in Arcline's sending IPs automatically.
+The `include:arcline.it` will pull in Arcline's sending IPs automatically.
 
 ---
 
@@ -95,7 +95,7 @@ The `rua` field specifies where you want to receive aggregate DMARC reports. Too
 For `yourdomain.com`, your DNS zone should have these TXT records:
 
 ```
-yourdomain.com.                TXT "v=spf1 mx include:arclineit.com ~all"
+yourdomain.com.                TXT "v=spf1 mx include:arcline.it ~all"
 arcline._domainkey.yourdomain.com.  TXT "v=DKIM1; h=sha256; p=..."
 _dmarc.yourdomain.com.         TXT "v=DMARC1; p=quarantine; rua=mailto:dmarc@yourdomain.com"
 ```

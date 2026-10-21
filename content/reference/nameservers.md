@@ -56,7 +56,7 @@ DNS propagation typically takes 15 minutes to a few hours, but can take up to 48
 
 | Type | Name | Value |
 |------|------|-------|
-| TXT | `@` | `v=spf1 mx include:arclineit.com ~all` |
+| TXT | `@` | `v=spf1 mx include:arcline.it ~all` |
 | TXT | `arcline._domainkey` | `v=DKIM1; h=sha256; p=...` |
 | TXT | `_dmarc` | `v=DMARC1; p=quarantine; rua=mailto:dmarc@yourdomain.com` |
 
