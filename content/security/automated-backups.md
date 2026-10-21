@@ -1,19 +1,19 @@
 ---
 title: "Set Up Automated Backups with Restic"
-description: "Automate encrypted off-site backups on your Arcline VPS using restic."
-section: vps
-order: 6
+description: "Automate encrypted off-site backups of a Linux server using restic."
+section: security
+order: 2
 ---
 
 # Set Up Automated Backups with Restic
 
-Restic is a fast, encrypted backup tool that supports local and remote storage backends (SFTP, S3, B2, rsync.net). This guide covers backing up your VPS to a remote repository.
+Restic is a fast, encrypted backup tool that supports local and remote storage backends (SFTP, S3, B2, rsync.net). This guide covers backing up a Linux server to a remote repository.
 
 ---
 
 ## Prerequisites
 
-- A VPS with sudo access
+- A Linux server with sudo access
 - A backup destination (SFTP server, Backblaze B2, or local storage)
 
 ---
@@ -35,7 +35,7 @@ restic version
 
 ## Step 2 — Initialize a repository
 
-### Option A: SFTP/SSH (recommended for Arcline customers)
+### Option A: SFTP/SSH (recommended)
 
 If you have SSH access to a backup server:
 
@@ -248,6 +248,6 @@ curl -fsS -m 10 -X POST -H "Content-Type: application/json" \
 
 ## What's next
 
-- [Install fail2ban](/vps/fail2ban/) for SSH brute-force protection
-- [Set up a Go service](/vps/go-systemd/) with systemd
+- [Install fail2ban](/security/fail2ban/) for SSH brute-force protection
+- [Harden WordPress](/security/wordpress/) if the server runs it
 

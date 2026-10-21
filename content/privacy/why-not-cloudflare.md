@@ -73,14 +73,14 @@ But these should be deliberate choices for specific problems, not a default for 
 
 ---
 
-## The Arcline approach
+## The approach we recommend
 
 Arcline is built on the principle that you should control your own infrastructure:
 
-- DNS is hosted on Arcline's own authoritative nameservers (NSD)
+- DNS is answered by nameservers you choose and can audit
 - TLS terminates at your server — no third party sees your traffic
-- Static sites are served directly by Nginx, without an intermediary
-- Monitoring and analytics are self-hosted (Prometheus + arcline-uptime)
+- Static sites are served directly by your web server, without an intermediary
+- Monitoring and analytics are self-hosted (for example, Prometheus and Wazuh)
 
 This means you don't get Cloudflare's global CDN or DDoS scrubbing by default. What you get is:
 
@@ -89,13 +89,12 @@ This means you don't get Cloudflare's global CDN or DDoS scrubbing by default. W
 - No vendor lock-in
 - Complete architectural flexibility
 
-For most small to medium sites, a single VPS with proper Nginx tuning, a good caching strategy, and fail2ban for security is more than adequate. See our [Self-Hosting Performance Tips](/privacy/self-hosting-performance/) guide for making the most of it.
+For most small to medium sites, a single well-tuned server with a good caching strategy and [fail2ban](/security/fail2ban/) for security is more than adequate.
 
 ---
 
 ## What's next
 
 - [How to check if a host is self-hosted](/privacy/arcline-check-walkthrough/) — use arcline-check
-- [Self-hosting without a CDN: performance tips](/privacy/self-hosting-performance/)
 - [What SPF, DKIM, and DMARC actually do](/privacy/spf-dkim-dmarc/)
 
