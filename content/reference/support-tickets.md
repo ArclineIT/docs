@@ -2,7 +2,7 @@
 title: "How to Open a Support Ticket"
 description: "How to contact Arcline support, what information to include, and expected response times."
 section: reference
-order: 5
+order: 1
 ---
 
 # How to Open a Support Ticket
@@ -29,8 +29,7 @@ Check these resources first — your question may already be answered:
 2. Click **Support → New Ticket**
 3. Select the relevant department:
    - **Billing** — invoices, plan changes, cancellations
-   - **Technical** — server issues, website problems, email setup
-   - **Migration** — moving from another provider to Arcline
+   - **Technical** — alerts, firewall and remote access problems, backups and restores, anything in a system we built or monitor
 4. Fill in the subject and description
 5. Include as much detail as possible (see below)
 6. Click **Submit**
@@ -57,24 +56,25 @@ The more detail you provide, the faster we can help. Include:
 | Detail | Example |
 |--------|---------|
 | **Your domain** | `example.com` |
-| **What you're trying to do** | "I'm trying to install WordPress on my VPS" |
-| **What's happening** | "I get a 500 error when visiting example.com/wp-admin" |
-| **What you've already tried** | "I've checked that PHP is running and the database credentials are correct" |
+| **What you're trying to do** | "I'm trying to connect to the office VPN from a new laptop" |
+| **What's happening** | "WireGuard says the handshake never completes" |
+| **What you've already tried** | "I re-imported the config and restarted the app" |
 | **Relevant logs or errors** | Paste the exact error message, not a summary |
-| **Recent changes** | "I updated WordPress to 6.7 yesterday" |
+| **Recent changes** | "We switched internet providers yesterday" |
 
 ---
 
 ## Response times
 
-| Priority | Response time | When to use |
-|----------|--------------|-------------|
-| **Critical** | < 1 hour | Site is down, email is not working, security issue |
-| **High** | < 4 hours | Site is slow but accessible, email is delayed |
-| **Normal** | < 24 hours | Configuration help, billing questions, migration support |
-| **Low** | < 72 hours | Feature requests, general questions, feedback |
+How quickly we respond depends on your engagement:
 
-Response times are based on Eastern Time (ET), Monday through Friday. Weekend and holiday responses may take longer.
+| Engagement | Response time |
+|------------|---------------|
+| **Project** | Within 24 hours, for the length of the project |
+| **Retainer** | 4–8 hours, during business hours and for emergencies |
+| **Managed** | 1–2 hours, around the clock |
+
+Business hours are Monday through Friday, Central Time. Your written agreement sets the exact terms. If you suspect a security incident, say so in the subject line.
 
 ---
 
@@ -105,7 +105,6 @@ Never share your account password. Arcline staff will never ask for your passwor
 
 ## What's next
 
-- [Arcline nameservers and DNS records](/reference/nameservers/)
-- [Supported PHP versions](/reference/php-versions/)
-- [Resource limits by plan](/reference/resource-limits/)
+- [What SPF, DKIM, and DMARC actually do](/privacy/spf-dkim-dmarc/)
+- [How to check if a host is self-hosted](/privacy/arcline-check-walkthrough/)
 

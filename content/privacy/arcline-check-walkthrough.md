@@ -146,7 +146,6 @@ This re-checks every 30 seconds. When the IP changes from the old provider to th
 ## Limitations
 
 - A CDN-detected result doesn't always mean bad hosting — some providers use CDNs for legitimate DDoS protection
-- Arcline doesn't use any CDN by default, but customers are free to add one if they choose
 - The tool can't detect every possible CDN or proxy — new providers are added regularly
 - If a site uses Cloudflare spectrum or TCP tunnels, it may appear self-hosted even though Cloudflare is involved
 
@@ -154,7 +153,6 @@ This re-checks every 30 seconds. When the IP changes from the old provider to th
 
 ## What's next
 
-- [Self-hosting without a CDN: performance tips](/privacy/self-hosting-performance/)
 - [Why you shouldn't put Cloudflare in front of everything](/privacy/why-not-cloudflare/)
 - [What SPF, DKIM, and DMARC actually do](/privacy/spf-dkim-dmarc/)
 

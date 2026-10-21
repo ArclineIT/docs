@@ -1,22 +1,21 @@
 ---
 title: "WordPress Security Hardening"
-description: "Lock down your WordPress site on Arcline — file permissions, login protection, XML-RPC hardening, and no third-party CDN required."
-section: wordpress
-order: 4
+description: "Lock down a WordPress site — file permissions, login protection, XML-RPC hardening, and no third-party CDN required."
+section: security
+order: 3
 ---
 
 # WordPress Security Hardening
 
-Most WordPress compromises happen through outdated plugins or weak passwords — not through server vulnerabilities. These steps harden a standard WordPress install on Arcline against the most common attacks.
+Most WordPress compromises happen through outdated plugins or weak passwords — not through server vulnerabilities. These steps harden a standard WordPress install against the most common attacks.
 
 ---
 
 ## Keep everything updated
 
-The single most effective security measure is updating WordPress core, plugins, and themes promptly. Every Arcline cPanel account includes:
+The single most effective security measure is updating WordPress core, plugins, and themes promptly. Minor core releases, which carry most security fixes, update automatically by default; leave that on.
 
-- **WordPress Toolkit** (cPanel → Software) — shows update status for all your WordPress sites at a glance. Click **Update** to apply security patches across all sites in one go.
-- **Softaculous** — can auto-update WordPress core. Go to Softaculous → **WordPress Manager → Settings** and enable auto-updates.
+If your host's control panel offers a WordPress manager (cPanel's WordPress Toolkit, Plesk's WP Toolkit), it can show update status for all your sites at a glance. On your own server, `wp core update` and `wp plugin update --all` with [WP-CLI](https://wp-cli.org) do the same from the command line.
 
 In WordPress admin, enable auto-updates for plugins and themes you trust. Go to **Plugins → Installed Plugins** and click **Enable auto-updates** next to each plugin.
 
@@ -24,9 +23,9 @@ In WordPress admin, enable auto-updates for plugins and themes you trust. Go to 
 
 ## File permissions
 
-WordPress files should be readable by the web server but not writable by anyone other than your cPanel user. Incorrect permissions are the most common way an attacker who gains access through a plugin vulnerability escalates to full site takeover.
+WordPress files should be readable by the web server but not writable by anyone other than the account that owns the site. Incorrect permissions are the most common way an attacker who gains access through a plugin vulnerability escalates to full site takeover.
 
-Via cPanel **File Manager** or SFTP:
+Via your host's file manager or SFTP:
 
 - **Directories:** `755` (rwxr-xr-x)
 - **Files:** `644` (rw-r--r--)
@@ -36,12 +35,12 @@ Via cPanel **File Manager** or SFTP:
 To fix permissions via SSH:
 
 ```bash
-find /home/username/public_html -type d -exec chmod 755 {} \;
-find /home/username/public_html -type f -exec chmod 644 {} \;
-chmod 640 /home/username/public_html/wp-config.php
+find /var/www/example.com -type d -exec chmod 755 {} \;
+find /var/www/example.com -type f -exec chmod 644 {} \;
+chmod 640 /var/www/example.com/wp-config.php
 ```
 
-Run these as your cPanel user — not as root.
+Replace `/var/www/example.com` with your site's directory (on shared hosting it is usually `~/public_html`). Run these as the account that owns the site — not as root.
 
 ---
 
@@ -49,7 +48,7 @@ Run these as your cPanel user — not as root.
 
 XML-RPC is a legacy API that's almost never needed by modern WordPress sites. It's heavily abused for brute-force attacks and DDoS amplification. Most sites can disable it entirely.
 
-**Via .htaccess** (shared hosting):
+**Via .htaccess** (Apache):
 
 ```apache
 <Files xmlrpc.php>
@@ -58,7 +57,7 @@ XML-RPC is a legacy API that's almost never needed by modern WordPress sites. It
 </Files>
 ```
 
-**Via Nginx** (VPS) — add to your site config:
+**Via Nginx** — add to your site config:
 
 ```nginx
 location = /xmlrpc.php { deny all; }
@@ -86,7 +85,7 @@ If you use the WordPress mobile app, you need XML-RPC. For everyone else, disabl
 </Files>
 ```
 
-For defense in depth, move `wp-config.php` one directory **above** `public_html` — WordPress looks there automatically. If it's currently at `/home/username/public_html/wp-config.php`, move it to `/home/username/wp-config.php`. WordPress will find it.
+For defense in depth, move `wp-config.php` one directory **above** the site's web root — WordPress looks there automatically. If it's currently at `~/public_html/wp-config.php`, move it to `~/wp-config.php`. WordPress will find it.
 
 ---
 
@@ -100,7 +99,7 @@ Add to `wp-config.php`:
 define( 'DISALLOW_FILE_EDIT', true );
 ```
 
-This removes the **Appearance → Theme File Editor** and **Plugins → Plugin File Editor** menu items for everyone. You'll make file changes via SFTP or cPanel File Manager instead.
+This removes the **Appearance → Theme File Editor** and **Plugins → Plugin File Editor** menu items for everyone. You'll make file changes via SFTP or your host's file manager instead.
 
 ---
 
@@ -112,7 +111,7 @@ On a production site where you manage installations through SFTP, you can comple
 define( 'DISALLOW_FILE_MODS', true );
 ```
 
-This blocks plugin/theme installs, updates, and deletions from the WordPress admin. Updates must be done via WP-CLI, WordPress Toolkit, or manually via SFTP. This is aggressive but very effective — it's a trade-off between convenience and security.
+This blocks plugin/theme installs, updates, and deletions from the WordPress admin. Updates must be done via WP-CLI, your host's WordPress manager, or manually via SFTP. This is aggressive but very effective — it's a trade-off between convenience and security.
 
 ---
 
@@ -162,7 +161,7 @@ Add to `.htaccess`:
 Options -Indexes
 ```
 
-Arcline shared hosting has this enabled by default. Verify by visiting `https://yourdomain.com/wp-includes/` in your browser — you should see a 403 Forbidden, not a file list.
+Many hosts set this by default. Verify by visiting `https://yourdomain.com/wp-includes/` in your browser — you should see a 403 Forbidden, not a file list.
 
 ---
 
@@ -197,7 +196,7 @@ if ( ! is_admin() && isset( $_SERVER['QUERY_STRING'] ) ) {
 
 Some security changes can break things. Before making any significant changes:
 
-1. Take a full cPanel backup (cPanel → **Files → Backup**)
-2. Export your database separately (see [Back Up and Restore a MySQL Database](/getting-started/mysql-backup/))
+1. Take a full backup of the site's files (your host's backup tool, or [restic](/security/automated-backups/) on your own server)
+2. Export your database separately (`wp db export` with WP-CLI, or `mysqldump`)
 3. Test changes one at a time so you know which one caused a problem if something breaks
 

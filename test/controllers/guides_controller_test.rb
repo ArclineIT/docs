@@ -11,15 +11,15 @@ class GuidesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "a section page lists its guides" do
-    get "/migrate"
+    get "/security"
 
     assert_response :success
-    assert_select "h1", "Migration Guides"
-    assert_select ".docs__card", Guide.find_section("migrate").guides.size
+    assert_select "h1", "Security"
+    assert_select ".docs__card", Guide.find_section("security").guides.size
   end
 
   test "a guide renders with its title once, the sidebar, and prev/next links" do
-    get "/migrate/from-bluehost"
+    get "/security/automated-backups"
 
     assert_response :success
     assert_select "h1", 1
@@ -41,10 +41,10 @@ class GuidesControllerTest < ActionDispatch::IntegrationTest
     get "/nope"
     assert_response :not_found
 
-    get "/migrate/nope"
+    get "/security/nope"
     assert_response :not_found
 
-    get "/migrate/from-godaddy/extra"
+    get "/security/fail2ban/extra"
     assert_response :not_found
   end
 
@@ -57,7 +57,7 @@ class GuidesControllerTest < ActionDispatch::IntegrationTest
     get sitemap_path
     assert_equal "application/xml; charset=utf-8", response.headers["Content-Type"]
     assert_equal Guide.all.size + Guide.sections.size + 1, response.body.scan("<loc>").size
-    assert_includes response.body, "<loc>https://docs.arcline.it/migrate/from-godaddy/</loc>"
+    assert_includes response.body, "<loc>https://docs.arcline.it/security/fail2ban/</loc>"
 
     get rss_path
     assert_equal Guide.all.size, response.body.scan("<item>").size

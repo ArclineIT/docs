@@ -4,13 +4,13 @@ class GuideTest < ActiveSupport::TestCase
   test "loads every guide, grouped into sections in display order" do
     sections = Guide.sections
 
-    assert_equal %w[ getting-started migrate wordpress vps privacy reference legal ], sections.map(&:slug)
-    assert_equal "Migration Guides", sections.second.title
+    assert_equal %w[ security privacy reference ], sections.map(&:slug)
+    assert_equal "Privacy & Self-Hosting", sections.second.title
     assert_equal Dir.glob(Rails.root.join("content/*/*.md")).size, Guide.all.size
   end
 
   test "guides in a section follow their order field" do
-    orders = Guide.find_section("migrate").guides.map(&:order)
+    orders = Guide.find_section("security").guides.map(&:order)
     assert_equal orders.sort, orders
   end
 
@@ -23,18 +23,18 @@ class GuideTest < ActiveSupport::TestCase
   end
 
   test "finds a guide and its neighbours" do
-    guide = Guide.find("migrate", "from-godaddy")
+    guide = Guide.find("security", "fail2ban")
 
-    assert_equal "Migrate from GoDaddy", guide.title
-    assert_equal "/migrate/from-godaddy/", guide.path
+    assert_equal "Set Up Fail2ban for SSH Brute-Force Protection", guide.title
+    assert_equal "/security/fail2ban/", guide.path
     assert_nil guide.previous
-    assert_equal "migrate", guide.next.section
+    assert_equal "security", guide.next.section
     assert_equal guide.path, guide.next.previous.path
   end
 
   test "unknown sections and guides are nil" do
     assert_nil Guide.find_section("nope")
-    assert_nil Guide.find("migrate", "nope")
-    assert_nil Guide.find("nope", "from-godaddy")
+    assert_nil Guide.find("security", "nope")
+    assert_nil Guide.find("nope", "fail2ban")
   end
 end

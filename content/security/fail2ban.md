@@ -1,8 +1,8 @@
 ---
 title: "Set Up Fail2ban for SSH Brute-Force Protection"
-description: "Protect your Arcline VPS from SSH brute-force attacks with fail2ban."
-section: vps
-order: 7
+description: "Protect any internet-facing Linux server from SSH brute-force attacks with fail2ban."
+section: security
+order: 1
 ---
 
 # Set Up Fail2ban for SSH Brute-Force Protection
@@ -14,7 +14,7 @@ Fail2ban monitors system logs for repeated failed login attempts and temporarily
 ## Prerequisites
 
 - A VPS with SSH access and sudo privileges
-- UFW or iptables already installed (see [Initial VPS Setup](/vps/initial-setup/))
+- UFW or iptables already installed
 
 ---
 
@@ -209,6 +209,6 @@ bantime = 86400
 
 ## What's next
 
-- [Deploy a Go binary](/vps/go-systemd/) as a systemd service
-- [Set up automated backups](/vps/automated-backups/) with restic
+- [Set up automated backups](/security/automated-backups/) with restic
+- [Harden WordPress](/security/wordpress/) if the server runs it
 

@@ -1,6 +1,6 @@
 # Arcline Docs
 
-Knowledge base, migration guides and self-hosting tutorials for Arcline,
+Security guides, privacy and self-hosting explainers, and client pages for Arcline,
 hosted at `docs.arcline.it`.
 
 This is the Ruby on Rails rewrite of the original Go site builder and server
@@ -10,8 +10,9 @@ is no separate static build.
 ## What it serves
 
 - **Public guides**: the Markdown files under `content/`, one folder per
-  section. 37 guides across getting started, migration, WordPress, VPS,
-  privacy and self-hosting, reference, and legal.
+  section. 7 guides across security, privacy and self-hosting, and reference.
+  The hosting guides and the hosting-era legal pages were removed when Arcline
+  stopped offering hosting; they remain in the repository history.
 - **My docs** (`/client`): private pages for signed-in customers. Each page is
   visible to everyone signed in, to customers on one plan, or to one customer.
 - **Admin** (`/admin/pages`): write and edit the private pages.
@@ -25,15 +26,15 @@ Add a Markdown file at `content/<section>/<slug>.md`. It is served at
 
 ```markdown
 ---
-title: "Migrate from GoDaddy"
-description: "Move your website and email from GoDaddy to Arcline without downtime."
-section: migrate
+title: "Set Up Fail2ban for SSH Brute-Force Protection"
+description: "Protect any internet-facing Linux server from SSH brute-force attacks with fail2ban."
+section: security
 order: 1
 ---
 
-# Migrate from GoDaddy
+# Set Up Fail2ban for SSH Brute-Force Protection
 
-Moving from GoDaddy to Arcline involves three parts...
+Fail2ban monitors system logs for repeated failed login attempts...
 ```
 
 `order` sorts guides within a section. The page shows the title from the

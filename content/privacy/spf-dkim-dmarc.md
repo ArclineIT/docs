@@ -1,8 +1,8 @@
 ---
 title: "What SPF, DKIM, and DMARC Actually Do"
-description: "An explanation of email authentication standards and how to set them up on Arcline."
+description: "An explanation of email authentication standards and how to set them up for your domain."
 section: privacy
-order: 4
+order: 3
 ---
 
 # What SPF, DKIM, and DMARC Actually Do
@@ -28,15 +28,15 @@ v=spf1 mx ip4:203.0.113.42 ~all
 
 This means: "Allow mail from your MX servers and from IP 203.0.113.42. Soft-fail everything else."
 
-**Setting it up on Arcline**:
+**Setting it up**:
 
-In your Arcline cPanel, go to **Domains → Zone Editor** and add a TXT record:
+At your DNS provider, add a TXT record at the root of your domain:
 
 | Type | Name | Value |
 |------|------|-------|
-| TXT | `@` | `v=spf1 mx include:arcline.it ~all` |
+| TXT | `@` | `v=spf1 mx include:_spf.mailprovider.example ~all` |
 
-The `include:arcline.it` will pull in Arcline's sending IPs automatically.
+Replace `include:_spf.mailprovider.example` with the include your email provider publishes, and add one for every other service that sends mail as your domain (a newsletter tool, a helpdesk, an invoicing system). A domain can have only one SPF record, so combine them into a single line.
 
 ---
 
@@ -45,23 +45,19 @@ The `include:arcline.it` will pull in Arcline's sending IPs automatically.
 **What it does**: DKIM signs your outgoing email with a cryptographic signature. The receiving server verifies the signature by looking up your public key in DNS.
 
 **How it works**:
-1. Arcline's mail server signs your outgoing message with a private key
+1. Your mail server signs your outgoing message with a private key
 2. The receiving server looks up your public DKIM key at `selector._domainkey.yourdomain.com`
 3. It decrypts the signature and verifies the message wasn't tampered with in transit
 
-**Setting it up on Arcline**:
+**Setting it up**:
 
-Arcline cPanel automatically generates DKIM keys. To verify they're set up:
-
-1. cPanel → **Email → Email Deliverability**
-2. Find your domain and click **Manage**
-3. You should see a green status for DKIM
-
-The DNS record is automatically added. It looks like:
+Your email provider generates the DKIM key pair and gives you the public key to publish, usually in its domain settings. Some providers add the record for you when they also host your DNS. It looks like:
 
 | Type | Name | Value |
 |------|------|-------|
-| TXT | `arcline._domainkey` | `v=DKIM1; h=sha256; p=MIGfMA0GCSqGSIb4DQEBAQUAA4GNADCBiQKBgQ...` |
+| TXT | `selector1._domainkey` | `v=DKIM1; h=sha256; p=MIGfMA0GCSqGSIb4DQEBAQUAA4GNADCBiQKBgQ...` |
+
+The selector (`selector1` here) is chosen by the provider. Use exactly the name they give you.
 
 ---
 
@@ -78,7 +74,7 @@ The DNS record is automatically added. It looks like:
    - `quarantine` — Mark as spam
    - `reject` — Reject the message outright
 
-**Setting it up on Arcline**:
+**Setting it up**:
 
 Start with `p=none` to see who's sending email for your domain without blocking anything. After a few weeks, review the reports and tighten to `p=quarantine`. After confirming all legitimate email is authenticated, move to `p=reject`.
 
@@ -95,8 +91,8 @@ The `rua` field specifies where you want to receive aggregate DMARC reports. Too
 For `yourdomain.com`, your DNS zone should have these TXT records:
 
 ```
-yourdomain.com.                TXT "v=spf1 mx include:arcline.it ~all"
-arcline._domainkey.yourdomain.com.  TXT "v=DKIM1; h=sha256; p=..."
+yourdomain.com.                     TXT "v=spf1 mx include:_spf.mailprovider.example ~all"
+selector1._domainkey.yourdomain.com. TXT "v=DKIM1; h=sha256; p=..."
 _dmarc.yourdomain.com.         TXT "v=DMARC1; p=quarantine; rua=mailto:dmarc@yourdomain.com"
 ```
 
@@ -109,7 +105,7 @@ Use one of these free tools to verify everything is working:
 ```bash
 # Command line
 dig TXT yourdomain.com +short
-dig TXT arcline._domainkey.yourdomain.com +short
+dig TXT selector1._domainkey.yourdomain.com +short
 dig TXT _dmarc.yourdomain.com +short
 ```
 
@@ -134,6 +130,5 @@ Or visit:
 ## What's next
 
 - [Why you shouldn't put Cloudflare in front of everything](/privacy/why-not-cloudflare/)
-- [Self-hosting without a CDN: performance tips](/privacy/self-hosting-performance/)
-- [Set up email on Arcline](/getting-started/email-setup/)
+- [How to check if a host is self-hosted](/privacy/arcline-check-walkthrough/)
 

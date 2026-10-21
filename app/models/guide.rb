@@ -2,13 +2,9 @@
 class Guide
   CONTENT_DIR = Rails.root.join("content")
   SECTIONS = {
-    "getting-started" => "Getting Started",
-    "migrate" => "Migration Guides",
-    "wordpress" => "WordPress",
-    "vps" => "VPS Guides",
+    "security" => "Security",
     "privacy" => "Privacy & Self-Hosting",
-    "reference" => "Reference",
-    "legal" => "Legal"
+    "reference" => "Reference"
   }.freeze
 
   Section = Data.define(:slug, :title, :guides) do
