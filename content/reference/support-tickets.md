@@ -16,7 +16,7 @@ When you need help, opening a support ticket is the best way to get a response. 
 Check these resources first — your question may already be answered:
 
 - **Knowledge base**: Browse the guides in this docs site
-- **Status page**: Check [status.arclineit.com](https://status.arclineit.com) for any active incidents or scheduled maintenance
+- **Status page**: Check [status.arcline.it](https://status.arcline.it) for any active incidents or scheduled maintenance
 - **FAQ**: Visit [arcline.it/faq](https://arcline.it/faq) for common questions
 
 ---
@@ -25,7 +25,7 @@ Check these resources first — your question may already be answered:
 
 ### Via the customer portal (recommended)
 
-1. Log in to the [Arcline Customer Portal](https://portal.arclineit.com)
+1. Log in to the [Arcline Customer Portal](https://portal.arcline.it)
 2. Click **Support → New Ticket**
 3. Select the relevant department:
    - **Billing** — invoices, plan changes, cancellations
@@ -39,7 +39,7 @@ You'll receive a confirmation email with the ticket number.
 
 ### Via email
 
-Send an email to **support@arclineit.com**. Include:
+Send an email to **support@arcline.it**. Include:
 
 - Your account username or email
 - A clear subject line

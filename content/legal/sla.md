@@ -102,7 +102,7 @@ service credits:
 
 Arcline measures uptime using our internal monitoring system (`arcline-uptime`),
 which performs checks from multiple locations at 1-minute intervals. Monitoring
-results are available at [status.arclineit.com](https://status.arclineit.com).
+results are available at [status.arcline.it](https://status.arcline.it).
 
 We monitor:
 - **HTTP services** — connection success, HTTP 200 status, response within 10s
@@ -120,7 +120,7 @@ and may submit their own monitoring data for consideration.
 
 ### Routine Maintenance
 - Typically performed Tuesday–Thursday between midnight and 6 AM ET
-- Announced on [status.arclineit.com](https://status.arclineit.com) at least
+- Announced on [status.arcline.it](https://status.arcline.it) at least
   48 hours in advance
 - Brief service interruptions (< 15 minutes) for routine updates
 
