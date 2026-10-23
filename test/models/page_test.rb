@@ -15,22 +15,23 @@ class PageTest < ActiveSupport::TestCase
     page = pages(:acme_notes)
 
     assert page.visible_to?(@acme, nil)
-    assert_not page.visible_to?(@other, "VPS Tier 2")
+    assert_not page.visible_to?(@other, "managed_security")
     assert_not page.visible_to?(nil, nil)
   end
 
   test "a plan page is visible only to customers on that plan" do
-    page = pages(:vps_runbook)
+    page = pages(:monitoring_runbook)
 
-    assert page.visible_to?(@other, "VPS Tier 2")
-    assert_not page.visible_to?(@other, "VPS Tier 1")
+    assert page.visible_to?(@other, "managed_security")
+    assert_not page.visible_to?(@other, "Managed Security Retainer")
+    assert_not page.visible_to?(@other, "other_plan")
     assert_not page.visible_to?(@other, nil)
-    assert_not page.visible_to?(nil, "VPS Tier 2")
+    assert_not page.visible_to?(nil, "managed_security")
   end
 
   test "visibility is built from the form fields and validated" do
-    assert_equal "public", Page.visibility_from(type: "public", plan: "vps_1")
-    assert_equal "plan:vps_1", Page.visibility_from(type: "plan", plan: "vps_1")
+    assert_equal "public", Page.visibility_from(type: "public", plan: "managed_security")
+    assert_equal "plan:managed_security", Page.visibility_from(type: "plan", plan: "managed_security")
     assert_equal "customer:a@b.test", Page.visibility_from(type: "customer", customer: " A@B.test ")
 
     page = pages(:welcome)
@@ -49,7 +50,7 @@ class PageTest < ActiveSupport::TestCase
 
   test "labels describe who can see a page" do
     assert_equal "Everyone signed in", pages(:welcome).visibility_label
-    assert_equal "Plan: VPS Tier 2", pages(:vps_runbook).visibility_label
+    assert_equal "Plan: Managed Security Retainer", pages(:monitoring_runbook).visibility_label
     assert_equal "Customer: owner@acme.test", pages(:acme_notes).visibility_label
   end
 end

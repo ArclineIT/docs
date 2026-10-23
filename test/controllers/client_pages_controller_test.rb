@@ -12,21 +12,21 @@ class ClientPagesControllerTest < ActionDispatch::IntegrationTest
     get client_pages_path
     assert_select ".docs__card-title", text: "Welcome"
     assert_select ".docs__card-title", text: "Acme notes"
-    assert_select ".docs__card-title", text: "VPS runbook", count: 0
+    assert_select ".docs__card-title", text: "Monitoring runbook", count: 0
 
     get client_page_path("acme-notes")
     assert_response :success
     assert_select ".prose", text: /Only for Acme/
 
-    get client_page_path("vps-runbook")
+    get client_page_path("monitoring-runbook")
     assert_response :forbidden
   end
 
   test "a plan page opens for a customer on that plan" do
     sign_in_as email: "someone@else.test"
 
-    stub_method(BillingReader, :plan_name_for, ->(email) { "VPS Tier 2" if email == "someone@else.test" }) do
-      get client_page_path("vps-runbook")
+    stub_method(BillingReader, :plan_name_for, ->(email) { "managed_security" if email == "someone@else.test" }) do
+      get client_page_path("monitoring-runbook")
       assert_response :success
 
       get client_page_path("acme-notes")
