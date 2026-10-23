@@ -2,16 +2,7 @@
 # customers on one plan, or to a single customer.
 class Page < ApplicationRecord
   PLANS = {
-    "shared_starter" => "Shared Hosting Starter",
-    "shared_pro" => "Shared Hosting Pro",
-    "shared_business" => "Shared Hosting Business",
-    "wp_starter" => "WordPress Starter",
-    "wp_pro" => "WordPress Pro",
-    "wp_business" => "WordPress Business",
-    "vps_1" => "VPS Tier 1",
-    "vps_2" => "VPS Tier 2",
-    "vps_3" => "VPS Tier 3",
-    "vps_4" => "VPS Tier 4"
+    "managed_security" => "Managed Security Retainer"
   }.freeze
   ACTIVE_STATUSES = %w[ active cancelling ].freeze
 
@@ -37,13 +28,13 @@ class Page < ApplicationRecord
   def visibility_type = visibility.split(":", 2).first
   def visibility_target = visibility.split(":", 2).second
 
-  # +viewer+ is the signed-in user (or nil) and +plan_name+ the name of their
-  # active plan from billing (or nil).
+  # +viewer+ is the signed-in user (or nil) and +plan_name+ the plan key of
+  # their active subscription from billing (or nil), such as "managed_security".
   def visible_to?(viewer, plan_name)
     case visibility_type
     when "public" then true
     when "customer" then viewer.present? && viewer.email == visibility_target
-    when "plan" then viewer.present? && plan_name.present? && plan_name == PLANS[visibility_target]
+    when "plan" then viewer.present? && plan_name.present? && plan_name == visibility_target
     else false
     end
   end

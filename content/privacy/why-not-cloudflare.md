@@ -7,7 +7,7 @@ order: 1
 
 # Why You Shouldn't Put Cloudflare in Front of Everything
 
-Cloudflare is popular — it's fast, free, and easy to set up. But the convenience comes with tradeoffs that matter, especially for a hosting provider that prides itself on self-hosting and privacy.
+Cloudflare is popular — it's fast, free, and easy to set up. But the convenience comes with tradeoffs that matter, especially if you care about owning your infrastructure and protecting your visitors' privacy.
 
 ---
 
@@ -15,7 +15,7 @@ Cloudflare is popular — it's fast, free, and easy to set up. But the convenien
 
 When you put Cloudflare in front of your origin server, Cloudflare becomes your infrastructure. If Cloudflare has an outage (and they've had several), your site goes down even if your server is perfectly healthy.
 
-In 2022, a Cloudflare global outage took down 20% of the internet's top million sites. Customers couldn't access their own servers because DNS wasn't resolving. If you self-host on Arcline, your DNS and traffic should be under your control.
+In 2022, a Cloudflare global outage took down 20% of the internet's top million sites. Customers couldn't access their own servers because DNS wasn't resolving. If you run your own servers, your DNS and traffic should stay under your control.
 
 ---
 
@@ -57,7 +57,7 @@ Cloudflare sits between your visitors and your server. This means:
 - Visitors on Cloudflare see "This site is powered by Cloudflare" banners and CAPTCHAs
 - The more sites that use Cloudflare, the more centralized the internet becomes
 
-For a hosting company that markets itself on privacy and independence, directing customers to Cloudflare undermines the entire value proposition.
+If your business promises clients privacy and independence, routing all of their traffic through Cloudflare undermines that promise.
 
 ---
 

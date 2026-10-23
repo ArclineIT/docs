@@ -33,11 +33,11 @@ class AdminPagesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
 
     assert_difference -> { Page.count } do
-      post admin_pages_path, params: { page: { title: "WP tuning", slug: "wp-tuning", content: "# Tune", display_order: 2,
-                                               visibility_type: "plan", visibility_plan: "wp_pro", visibility_customer: "ignored@x.test" } }
+      post admin_pages_path, params: { page: { title: "Alert tuning", slug: "alert-tuning", content: "# Tune", display_order: 2,
+                                               visibility_type: "plan", visibility_plan: "managed_security", visibility_customer: "ignored@x.test" } }
     end
     assert_redirected_to admin_pages_path
-    assert_equal "plan:wp_pro", Page.find_by!(slug: "wp-tuning").visibility
+    assert_equal "plan:managed_security", Page.find_by!(slug: "alert-tuning").visibility
   end
 
   test "an admin edits a page down to one customer, and bad input is shown" do
